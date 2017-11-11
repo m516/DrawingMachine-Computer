@@ -16,6 +16,7 @@ would like to work on the source code, import the project with the Eclipse exten
 separate Git client (e.g. SmartGit, Github Desktop, etc.) and import the source code as an Eclipse 
 project.
 
+Questions?  Comments?  Concerns?  Shoot me an email at mm44928@wdmcs.org
 
 ## Bugs
 - [ ] JavaFX services for designing and printing the image do not reset after prints,
