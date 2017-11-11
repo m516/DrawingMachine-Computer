@@ -15,8 +15,8 @@ public class PrintGenerator{
 	private Canvas canvas;
 	private byte[][] pixels;
 	private ArrayList<Point> points = new ArrayList<Point>();
-	public static final int BLACK_AND_WHITE = 0,
-			COLOR = 1;
+	public static final int METHOD_BLACK_AND_WHITE = 0,
+			METHOD_COLOR = 1;
 	private static Color palette[] = {Color.MAGENTA,
 			Color.YELLOW,
 			Color.CYAN,
@@ -26,14 +26,14 @@ public class PrintGenerator{
 			null, 
 			null};
 	private static int numColors = 5;
-	private static int printMethod = BLACK_AND_WHITE;
+	private static int printMethod = METHOD_BLACK_AND_WHITE;
 	public PrintGenerator(Canvas previewCanvas){
 		canvas = previewCanvas;
 	}
 	public PrintGenerator(Canvas previewCanvas, Image image, int printMethod){
 		canvas = previewCanvas;
 		this.image = image;
-		this.printMethod = printMethod;
+		PrintGenerator.printMethod = printMethod;
 		computePoints();
 	}
 	/**
@@ -80,17 +80,17 @@ public class PrintGenerator{
 	 * @return the numColors
 	 */
 	public static int getNumColors() {
-		if(printMethod==BLACK_AND_WHITE)return 1;
+		if(printMethod==METHOD_BLACK_AND_WHITE)return 1;
 		return numColors;
 	}
 	private void computePoints(){
-		if(printMethod==BLACK_AND_WHITE) System.out.println("Printing in black and white");
-		else if(printMethod==COLOR) System.out.println("Printing in color");
+		if(printMethod==METHOD_BLACK_AND_WHITE) System.out.println("Printing in black and white");
+		else if(printMethod==METHOD_COLOR) System.out.println("Printing in color");
 		else System.out.println("I don't know how to print!");
 		PixelReader pixelReader = image.getPixelReader();
 		pixels = new byte[(int)image.getWidth()][(int)image.getHeight()];
 
-		if(printMethod==BLACK_AND_WHITE){
+		if(printMethod==METHOD_BLACK_AND_WHITE){
 			double total = 0;
 			for(int i = 0; i < image.getWidth(); i ++){
 				for (int j = 0; j < image.getHeight(); j++) {
@@ -104,7 +104,7 @@ public class PrintGenerator{
 				}
 			}
 		}
-		else if(printMethod == COLOR){
+		else if(printMethod == METHOD_COLOR){
 			double total[] = new double[8];
 			for(int i = 0; i < image.getWidth(); i ++){
 				for (int j = 0; j < image.getHeight(); j++) {
@@ -170,7 +170,7 @@ public class PrintGenerator{
 			graphics.setFill(Color.WHITE);
 			graphics.fillRect(0, 0, projectedWidth, projectedHeight);
 
-			if (printMethod == BLACK_AND_WHITE){
+			if (printMethod == METHOD_BLACK_AND_WHITE){
 				graphics.setFill(Color.BLACK);
 				if(points.size()==0){
 					for(int i = 0; i < pixels.length; i ++){
@@ -188,7 +188,7 @@ public class PrintGenerator{
 					}
 				}
 			}
-			else if (printMethod == COLOR){
+			else if (printMethod == METHOD_COLOR){
 				if(points.size()==0){
 					for(int i = 0; i < pixels.length; i ++){
 						for (int j = 0; j < pixels[i].length; j++) {

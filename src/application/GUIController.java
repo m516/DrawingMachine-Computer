@@ -70,12 +70,6 @@ public class GUIController implements Initializable {
 
     @FXML
     private SplitMenuButton printTypeMenu;
-
-    @FXML
-    private MenuItem menuBW;
-
-    @FXML
-    private MenuItem menuColor;
     
     @FXML
     private AnchorPane panelColors;
@@ -112,6 +106,11 @@ public class GUIController implements Initializable {
     public static GUIController instance;
     
     public static PrintGenerator previewController;
+    
+    private static int DESTINATION_ARDUINO = 0,
+    		DESTINATION_CSV = 1;
+    
+    private static int printDestination = DESTINATION_ARDUINO;
 
     @Override
 	public void initialize(URL fxmlFileLocation, ResourceBundle resources) {
@@ -137,7 +136,7 @@ public class GUIController implements Initializable {
     
     @FXML
     void closeApp(ActionEvent event) {
-    	PrinterInterface.printer.close();
+    	PrinterArduino.printer.close();
     	GUI.getStage().close();
     	System.exit(0);
     }
@@ -178,11 +177,14 @@ public class GUIController implements Initializable {
     @FXML
     void print(ActionEvent event) {
     	try{
-    		if(!PrinterInterface.isinitialized()){
+    		//Create, initialize, and run a printer
+    		//XXX Use a switch instead of a ternary operator if any other printers are written
+    		Printable pi = printDestination==DESTINATION_ARDUINO?new PrinterArduino():new PrinterCSV();
+    		if(!PrinterArduino.isinitialized()){
     			double width = Double.parseDouble(prompt("Width of print", "What is the length of the print?", "6.0"));
-    			PrinterInterface.initialize(previewController, width);
+    			pi.initialize(previewController, width);
     		}
-    		PrinterInterface.print();
+    		pi.print();
     	}
     	catch(Exception e){
     		String message = "Uh oh, we couldn't print\n\n\n"+e.toString()+"\n"+e.getMessage()+"\n";
@@ -200,13 +202,25 @@ public class GUIController implements Initializable {
     @FXML
     void setMenuColor(ActionEvent event) {
     	panelColors.setVisible(true);
-    	previewController.setPrintMethod(PrintGenerator.COLOR);
+    	previewController.setPrintMethod(PrintGenerator.METHOD_COLOR);
+    	printTypeMenu.setText("Color");
+    	printDestination = DESTINATION_ARDUINO;
     }
 
     @FXML
     void setMenuBW(ActionEvent event) {
     	panelColors.setVisible(false);
-    	previewController.setPrintMethod(PrintGenerator.BLACK_AND_WHITE);
+    	previewController.setPrintMethod(PrintGenerator.METHOD_BLACK_AND_WHITE);
+    	printTypeMenu.setText("Black and White");
+    	printDestination = DESTINATION_ARDUINO;
+    }
+    
+    @FXML
+    void setMenuCSVBW(ActionEvent event) {
+    	panelColors.setVisible(false);
+    	previewController.setPrintMethod(PrintGenerator.METHOD_BLACK_AND_WHITE);
+    	printTypeMenu.setText("Black and White (to CSV)");
+    	printDestination = DESTINATION_CSV;
     }
     
     /**

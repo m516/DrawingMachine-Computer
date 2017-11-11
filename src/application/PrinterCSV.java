@@ -1,40 +1,42 @@
 package application;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.ArrayList;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
-public class PrinterInterface{
-	private static volatile boolean hasRecievedMessage = false, hasRecievedErrorMessage = false;
+public class PrinterCSV implements Printable{
 	private static volatile double width, height;
 	protected static volatile int currentColor = 0;
 	private static PrintGenerator image;
-	public static ArduinoSerialComm printer = new ArduinoSerialComm();
 	private static boolean initialized = false;
-	public static void initialize(PrintGenerator imagePreview, double printWidth) throws Exception{
+	private static File chosenFolder;
+	
+	public PrinterCSV() {
+		//Do nothing
+	}
+	
+	@Override
+	public void initialize(PrintGenerator imagePreview, double printWidth) throws Exception{
+		//Directory chooser
+		DirectoryChooser dc = new DirectoryChooser();
+		dc.setTitle("Choose output folder");
+		chosenFolder = dc.showDialog(GUI.getStage());
+		if(chosenFolder.isFile())throw new Exception();
+		//TODO sanity checks
+		
+		//Image handling
 		image = imagePreview;
 		System.out.println("Point set dimensions: " + image.width() + " x " + image.height());
 		width = printWidth;
 		height = width/(double)image.width()*image.height();
 		System.out.println("Print dimensions: " + width + " x " + height);
-		printer.initialize();
-		delay(1000);
-		String response = GUIController.prompt("Arduino Configuration", "What is the length of the string on the left?", "12.0");
-		printer.out.print(response);
-		delay(1000);
-		response = GUIController.prompt("Arduino Configuration", "And the right?", "12.0");
-		printer.out.print(response);
 		System.out.println("PrinterInterface done initializing");
-		delay(1000);
-
-		//Calibrate the printer.
-		GUIController.info("Calibrating: Lift pen");
-		for(int i = 0; i < 3; i ++){
-			safeSendCoordinates((int)(image.width()*1.1),(int)(image.height()*1.1));
-			safeSendCoordinates(0,0);
-		}
-		initialized = true;
 	}
 
 
@@ -57,14 +59,6 @@ public class PrinterInterface{
 					GUIController.progress.set(0.0);
 					pointList = image.getPoints();
 					size = pointList.size();
-
-					//Get to the first line so the printer doesn't draw an extra line.
-					currentPoint = pointList.remove(0);
-					safeSendCoordinates(currentPoint.x,currentPoint.y);
-					currentPoint = pointList.remove(0);
-					safeSendCoordinates(currentPoint.x,currentPoint.y);
-					
-					image.draw();
 					return null;
 				}
 			};
@@ -85,12 +79,14 @@ public class PrinterInterface{
 			Task<Void> drawPoints = new Task<Void>(){
 				@Override
 				public Void call(){
+					//TODO create file in folder
+					
 					int i = 0;
 					while(pointList.size()>1){
 						currentPoint = pointList.remove(0);
-						safeSendCoordinates(currentPoint.x,currentPoint.y);
+						//TODO output point list to file
 						//Update periodically
-						i = (i+1)%15;
+						i = (i+1)%1000;
 						if(i==0) {
 							image.draw();
 							GUIController.progress.set(1.0-(double)pointList.size()/size);
@@ -105,7 +101,7 @@ public class PrinterInterface{
 				if(currentColor<PrintGenerator.getNumColors()-1){
 					System.out.println("Printing color " + ++currentColor);
 					showDialogue( "Lift the pen.");
-					safeSendCoordinates(0, 0);
+					//TODO
 					calcService.reset();
 					calcService.start();
 				}
@@ -122,15 +118,9 @@ public class PrinterInterface{
 		
 	}
 	
-	public static void print() throws Exception{
+	@Override
+	public void print() throws Exception{
 		if(!initialized) initialize(GUIController.previewController, 3.0);
-
-		
-		
-
-		
-		
-		
 		calcService.start();
 		/*
 		int numDots = 0;
@@ -177,37 +167,6 @@ public class PrinterInterface{
 		 */
 
 
-	}
-
-	private static void safeSendCoordinates(int x, int y){
-		hasRecievedMessage=false;
-		sendCoordinatesTo(x,y);
-		while(!hasRecievedMessage){
-			try {
-				Thread.sleep(50);
-			} catch (InterruptedException e) {
-				System.err.println("Can't wait for ya");
-			}
-			if(hasRecievedErrorMessage){
-				sendCoordinatesTo(x,y);
-				hasRecievedErrorMessage = false;
-			}
-		}
-	}
-	private static void sendCoordinatesTo(int x, int y){
-		double calculatedX = (double)x/(image.width()-1)*width;
-		double calculatedY = (double)y/(image.height()-1)*height;
-		printer.out.println("@"+calculatedX+","+calculatedY);
-		if(ArduinoSerialComm.VERBOSE) System.out.println("Application sent "+calculatedX+","+calculatedY);
-	}
-
-	public static void sendNextMessage(){
-		hasRecievedMessage = true;
-		hasRecievedErrorMessage = false;
-	}
-
-	public static void sendErrorMessage(){
-		hasRecievedErrorMessage = true;
 	}
 
 	public static boolean isinitialized(){

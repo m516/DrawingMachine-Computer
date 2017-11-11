@@ -91,9 +91,9 @@ public class ArduinoSerialComm implements SerialPortEventListener {
 				String inputLine=in.readLine();
 				if(VERBOSE) System.out.println(inputLine);
 				if(inputLine.equals("g")) {
-					PrinterInterface.sendNextMessage();
+					PrinterArduino.sendNextMessage();
 				}
-				else PrinterInterface.sendErrorMessage();
+				else PrinterArduino.sendErrorMessage();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
