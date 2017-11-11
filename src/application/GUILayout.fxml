@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.SplitMenuButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.GUIController">
+   <center>
+      <SplitPane fx:id="splitPanel" dividerPositions="0.3394648829431438" maxHeight="10000.0" maxWidth="10000.0" minHeight="0.0" minWidth="0.0" onDragDetected="#panelDragDetected" onMouseDragEntered="#panelDragDone" onMouseDragExited="#panelDragDone" onMouseDragOver="#panelDragDone" onMouseDragReleased="#panelDragDone" BorderPane.alignment="CENTER">
+         <items>
+            <AnchorPane fx:id="imageContainer" maxHeight="10000.0" maxWidth="10000.0" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <ImageView fx:id="imageViewer" fitHeight="299.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+            <AnchorPane fx:id="previewContainer" maxHeight="10000.0" maxWidth="10000.0" minHeight="0.0" minWidth="0.0">
+               <children>
+                  <Canvas fx:id="printPreview" AnchorPane.leftAnchor="1.0" AnchorPane.topAnchor="0.0" />
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </center>
+   <top>
+      <SplitPane dividerPositions="0.5" minHeight="0.0" minWidth="0.0" BorderPane.alignment="CENTER">
+         <items>
+            <AnchorPane minHeight="0.0" minWidth="0.0">
+               <children>
+                  <MenuBar fx:id="menuBar" minHeight="0.0" minWidth="0.0" prefHeight="25.0" prefWidth="500.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <menus>
+                        <Menu fx:id="menuFile" mnemonicParsing="false" text="File">
+                           <items>
+                              <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#closeApp" text="Close Window" />
+                              <MenuItem fx:id="menuOpen" mnemonicParsing="false" onAction="#openImage" text="Open Image" />
+                              <MenuItem fx:id="menuPrint" mnemonicParsing="false" onAction="#print" text="Print" />
+                           </items>
+                        </Menu>
+                        <Menu fx:id="menuHelp" mnemonicParsing="false" text="Help">
+                           <items>
+                              <MenuItem fx:id="menuAbout" mnemonicParsing="false" onAction="#showAboutDialog" text="About" />
+                           </items>
+                        </Menu>
+                     </menus>
+                  </MenuBar>
+               </children>
+            </AnchorPane>
+            <AnchorPane minHeight="0.0" minWidth="0.0">
+               <children>
+                  <SplitMenuButton fx:id="printTypeMenu" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="Printing Method" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <items>
+                      <MenuItem fx:id="menuBW" mnemonicParsing="false" onAction="#setMenuBW" text="Black and White" />
+                      <MenuItem fx:id="menuColor" mnemonicParsing="false" onAction="#setMenuColor" text="Color" />
+                    </items>
+                  </SplitMenuButton>
+               </children>
+            </AnchorPane>
+         </items>
+      </SplitPane>
+   </top>
+   <right>
+      <AnchorPane fx:id="panelColors" prefHeight="200.0" visible="false" BorderPane.alignment="CENTER">
+         <children>
+            <Label layoutX="64.0" layoutY="14.0" text="Colors" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <ColorPicker fx:id="colorPicker1" editable="true" layoutX="-26.0" layoutY="35.0" onAction="#pickColor" promptText="Color 1" AnchorPane.leftAnchor="0.0" />
+            <ColorPicker fx:id="colorPicker2" editable="true" layoutY="60.0" onAction="#pickColor" />
+            <ColorPicker fx:id="colorPicker3" editable="true" layoutY="85.0" onAction="#pickColor" />
+            <ColorPicker fx:id="colorPicker4" editable="true" layoutY="110.0" onAction="#pickColor" />
+            <ColorPicker fx:id="colorPicker5" editable="true" layoutY="135.0" onAction="#pickColor" />
+            <ColorPicker fx:id="colorPicker6" editable="true" layoutY="160.0" onAction="#pickColor" />
+            <ColorPicker fx:id="colorPicker7" editable="true" layoutY="185.0" onAction="#pickColor" />
+            <ColorPicker fx:id="colorPicker8" editable="true" layoutY="210.0" onAction="#pickColor" />
+         </children>
+      </AnchorPane>
+   </right>
+   <bottom>
+      <ProgressBar fx:id="progressBar" maxHeight="32.0" maxWidth="1.7976931348623157E308" progress="0.0" />
+   </bottom>
+</BorderPane>

@@ -1,0 +1,28 @@
+.root {
+
+    /* A darker used for the background of windows.  See also
+     * -fx-text-background-color, which should be used as the -fx-text-fill
+     * value for text painted on top of backgrounds colored with -fx-background.
+     */
+    -fx-background: #101010;
+
+    /* Used for the inside of text boxes, password boxes, lists, trees, and
+     * tables.  See also -fx-text-inner-color, which should be used as the
+     * -fx-text-fill value for text painted on top of backgrounds colored
+     * with -fx-control-inner-background.
+     */
+    -fx-control-inner-background: derive(-fx-base,75%);
+    /* Version of -fx-control-inner-background for alternative rows */
+    -fx-control-inner-background-alt: derive(-fx-control-inner-background,25%);
+
+    /* A bright blue for highlighting/accenting objects.  For example: selected
+     * text; selected items in menus, lists, trees, and tables; progress bars */
+    -fx-accent: #708090;
+
+    /* A bright blue for the focus indicator of objects. Typically used as the
+     * first color in -fx-background-color for the "focused" pseudo-class. Also
+     * typically used with insets of -1.4 to provide a glowing effect.
+     */
+    -fx-focus-color: #039ED3;
+    -fx-faint-focus-color: #027aa150;
+}
