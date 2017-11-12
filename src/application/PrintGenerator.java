@@ -83,6 +83,18 @@ public class PrintGenerator{
 		if(printMethod==METHOD_BLACK_AND_WHITE)return 1;
 		return numColors;
 	}
+	
+	/**
+	 * @param index the index of the color
+	 * @return the color object
+	 */
+	public static Color getColor(int index){
+		return palette[index];
+	}
+	
+	/**
+	 * Generates a point cloud based on the selected image
+	 */
 	private void computePoints(){
 		if(printMethod==METHOD_BLACK_AND_WHITE) System.out.println("Printing in black and white");
 		else if(printMethod==METHOD_COLOR) System.out.println("Printing in color");

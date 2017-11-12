@@ -1,17 +1,16 @@
 package application;
 
+import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 
 public class PrinterCSV implements Printable{
-	private static volatile double width, height;
 	protected static volatile int currentColor = 0;
 	private static PrintGenerator image;
 	private static boolean initialized = false;
@@ -32,16 +31,13 @@ public class PrinterCSV implements Printable{
 		
 		//Image handling
 		image = imagePreview;
-		System.out.println("Point set dimensions: " + image.width() + " x " + image.height());
-		width = printWidth;
-		height = width/(double)image.width()*image.height();
-		System.out.println("Print dimensions: " + width + " x " + height);
-		System.out.println("PrinterInterface done initializing");
+		
+		//Done initializing
+		initialized = true;
 	}
 
 
 	private static volatile ArrayList<Point> pointList;
-	private static volatile Point currentPoint;
 	private static volatile int size;
 	private static volatile CalcService calcService = new CalcService();
 	private static volatile DrawService drawService = new DrawService();
@@ -63,7 +59,6 @@ public class PrinterCSV implements Printable{
 				}
 			};
 			calcPoints.setOnSucceeded(e->{
-				showDialogue( "Set the pen color to " + currentColor);
 				drawService.reset();
 				drawService.start();
 			});
@@ -79,20 +74,35 @@ public class PrinterCSV implements Printable{
 			Task<Void> drawPoints = new Task<Void>(){
 				@Override
 				public Void call(){
-					//TODO create file in folder
 					
-					int i = 0;
-					while(pointList.size()>1){
-						currentPoint = pointList.remove(0);
-						//TODO output point list to file
-						//Update periodically
-						i = (i+1)%1000;
-						if(i==0) {
-							image.draw();
-							GUIController.progress.set(1.0-(double)pointList.size()/size);
+					try{
+				        Writer output = null;
+				        File outputFile;
+				        if(image.getPrintMethod()==PrintGenerator.METHOD_COLOR) outputFile = new File(chosenFolder, "PointList"+currentColor+"Color"+PrintGenerator.getColor(currentColor).toString()+".csv");
+				        else outputFile = new File(chosenFolder, "PointList.csv");
+				        output = new BufferedWriter(new FileWriter(outputFile));
+				        
+				        int i = 0;
+						while(pointList.size()>1){
+							Point currentPoint = pointList.remove(0);
+							//TODO output point list to file
+							output.write(currentPoint.toCSV()+System.lineSeparator());
+							//Update periodically
+							i = (i+1)%1000;
+							if(i==0) {
+								image.draw();
+								GUIController.progress.set(1.0-(double)pointList.size()/size);
+								delay(250);
+							}
 						}
-					}
-					pointList.clear();
+						
+				        output.close();
+				        System.out.println("File has been written");
+						pointList.clear();
+						
+				    }catch(Exception e){
+				        System.out.println("Could not create file");
+				    }
 					return null;
 				}
 			};
@@ -100,15 +110,15 @@ public class PrinterCSV implements Printable{
 			drawPoints.setOnSucceeded(e->{
 				if(currentColor<PrintGenerator.getNumColors()-1){
 					System.out.println("Printing color " + ++currentColor);
-					showDialogue( "Lift the pen.");
 					//TODO
 					calcService.reset();
 					calcService.start();
 				}
 				else{
-
-					showDialogue( "Yay!! It's finally done!  Next time you should use a real printer :)");
+					showDialogue( "Yay!! It's finally done!  Good luck, printer! :)");
 					System.out.println("Yippee! Done printing!");
+					calcService.reset();
+					drawService.reset();
 				}
 			});
 			
