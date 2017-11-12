@@ -58,8 +58,9 @@
                <children>
                   <SplitMenuButton fx:id="printTypeMenu" minHeight="0.0" minWidth="0.0" mnemonicParsing="false" text="Printing Method" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <MenuItem fx:id="menuBW" mnemonicParsing="false" onAction="#setMenuBW" text="Black and White" />
-                      <MenuItem fx:id="menuColor" mnemonicParsing="false" onAction="#setMenuColor" text="Color" />
+                      <MenuItem mnemonicParsing="false" onAction="#setMenuBW" text="Black and White" />
+                        <MenuItem mnemonicParsing="false" onAction="#setMenuCSVBW" text="Black and White (CSV)" />
+                      <MenuItem mnemonicParsing="false" onAction="#setMenuColor" text="Color" />
                     </items>
                   </SplitMenuButton>
                </children>

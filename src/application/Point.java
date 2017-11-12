@@ -6,8 +6,17 @@ public class Point{
 		x=newX;
 		y=newY;
 	}
+	/**
+	 * @return the string-value of the point
+	 */
 	public String toString(){
 		return "("+x+","+y+")";
+	}
+	/**
+	 * @return a CSV-friendly string of the point
+	 */
+	public String toCSV(){
+		return ""+x+","+y;
 	}
 	public double distance(Point point) {
 		return (x-point.x)*(x-point.x)+(y-point.y)*(y-point.y);
