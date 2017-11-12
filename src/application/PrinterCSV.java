@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 
 public class PrinterCSV implements Printable{
@@ -74,20 +75,28 @@ public class PrinterCSV implements Printable{
 			Task<Void> drawPoints = new Task<Void>(){
 				@Override
 				public Void call(){
-					
+					//Create a file
 					try{
+						//Create a file in the folder
 				        Writer output = null;
 				        File outputFile;
+				        //Give it a number and a hex if it's color
 				        if(image.getPrintMethod()==PrintGenerator.METHOD_COLOR) outputFile = new File(chosenFolder, "PointList"+currentColor+"Color"+PrintGenerator.getColor(currentColor).toString()+".csv");
+				        //Name it "PointList" if it's black-and-white
 				        else outputFile = new File(chosenFolder, "PointList.csv");
 				        output = new BufferedWriter(new FileWriter(outputFile));
+				        //Initialize with the width and height of the picture
+				        //First get the dimensions
+				        Image im = image.getImage();
+				        output.write(""+im.getWidth()+","+im.getHeight()+System.lineSeparator());
 				        
+				        //Iterate through the points and print 'em out
 				        int i = 0;
 						while(pointList.size()>1){
+							//Print the next point
 							Point currentPoint = pointList.remove(0);
-							//TODO output point list to file
 							output.write(currentPoint.toCSV()+System.lineSeparator());
-							//Update periodically
+							//Update periodically (every 1000 points)
 							i = (i+1)%1000;
 							if(i==0) {
 								image.draw();
@@ -110,7 +119,6 @@ public class PrinterCSV implements Printable{
 			drawPoints.setOnSucceeded(e->{
 				if(currentColor<PrintGenerator.getNumColors()-1){
 					System.out.println("Printing color " + ++currentColor);
-					//TODO
 					calcService.reset();
 					calcService.start();
 				}
