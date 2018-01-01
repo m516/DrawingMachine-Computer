@@ -18,8 +18,6 @@ would like to work on the source code, import the project with the Eclipse exten
 separate Git client (e.g. SmartGit, Github Desktop, etc.) and import the source code as an Eclipse 
 project.
 
-Questions?  Comments?  Concerns?  Shoot me an email at mm44928@wdmcs.org
-
 ## Bugs
 
 - [ ] JavaFX services for designing and printing the image do not reset after prints,
@@ -47,8 +45,8 @@ so the program will only print one time.
 Raspberry Pi) can print with a connection to Arduino
 
 ## Notes
-- The binary is now a single executable JAR
+- The binary is now a single executable JAR.  It will only work on Windows machines with 64-bit architecture since it contains several JavaFX classes.
 
-- DrawingMachine has been tested on multiple Windows machines, and the application works fine.  However, it does not start up on a Raspberry Pi running a flavor of Debian.  Machines running on flavors of OS X and Linux will not print to an Arduino because the application searches for the Arduino exclusively on the USB port COM3.
+- If you are using a Mac or Linux machine, simply open the source code in Ecipse or Netbeans and replace the JavaFX library. You will need to change the USB address in the ArduinoSerialComm class from "COM3" to the address of your Arduino, such as "/dev/tty/ACM0" on Debian or Ubuntu.
 
 Please email me if you have any questions or comments.  My email is mm44928@wdmcs.org.
