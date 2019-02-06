@@ -5,8 +5,9 @@ The program provides a GUI to allow users to open images of (nearly) any type, c
 a single path (for black and white prints) or multiple paths (2-8 colors), and send the points on 
 each path to an arduino that serves as a printer.  
 
-Sample Arduino programs can be found [here](https://github.com/QuarksAndLeptons/DrawingMachine-Arduino)
-A Python script for printing from a CSV file can be found [here](https://github.com/QuarksAndLeptons/DrawingMachine-Computer-Lite)
+Sample Arduino programs can be found [here](https://github.com/QuarksAndLeptons/DrawingMachine-Arduino).
+
+A Python script for printing from a CSV file can be found [here](https://github.com/QuarksAndLeptons/DrawingMachine-Computer-Lite).
 
 ## Bugs
 
