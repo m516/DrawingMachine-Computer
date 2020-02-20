@@ -3,7 +3,7 @@
 This repository contains the original source code for the Java application that runs on a computer.
 The program provides a GUI to allow users to open images of (nearly) any type, convert them to
 a single path (for black and white prints) or multiple paths (2-8 colors), and send the points on 
-each path to an arduino that serves as a printer.  
+each path to an Arduino that serves as a printer. The source code is an Eclipse project. 
 
 Sample Arduino programs can be found [here](https://github.com/QuarksAndLeptons/DrawingMachine-Arduino).
 
@@ -35,7 +35,8 @@ so the program will only print one time.
 - [X] Write a new program (in Python?) to print generated csv.  This way anyone with Python (e.g. 
 Raspberry Pi) can print with a connection to Arduino
 
-- [ ] The JavaFX library is required for building the project from source code. It would be nice if that was
+- [ ] The JavaFX library is required for building the project from source code and for 
+executing the JAR file in the most recent release. It would be nice if JavaFX was
 included in the source code
 
 - [ ] Upgrade to Java 9+
