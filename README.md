@@ -35,9 +35,12 @@ so the program will only print one time.
 - [X] Write a new program (in Python?) to print generated csv.  This way anyone with Python (e.g. 
 Raspberry Pi) can print with a connection to Arduino
 
+- [ ] The JavaFX library is required for building the project from source code. It would be nice if that was
+included in the source code
+
+- [ ] Upgrade to Java 9+
+
 ## Notes
 - The binary is now a single executable JAR.  It will only work on Windows machines with 64-bit architecture since it contains several JavaFX classes.
 
 - If you are using a Mac or Linux machine, simply open the source code in Ecipse or Netbeans and replace the JavaFX library. You will need to change the USB address in the ArduinoSerialComm class from "COM3" to the address of your Arduino, such as "/dev/tty/ACM0" on Debian or Ubuntu.
-
-Please email me if you have any questions or comments.  My email is micah112358@gmail.com.
